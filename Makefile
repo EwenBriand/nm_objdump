@@ -5,7 +5,7 @@
 ## my Makefile
 ##
 
-SRCNM	=
+SRCNM	=	src/nm/init_delete.c 	\
 
 OBJNM	=	$(SRCNM:.c=.o)
 
