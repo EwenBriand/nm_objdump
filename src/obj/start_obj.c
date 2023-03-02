@@ -15,17 +15,15 @@ void my_obj(int fd, char *file)
 
     fstat(fd, &s);
     buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-    if (buf != NULL) {
-        elf = buf;
-        if (elf->e_ident[EI_CLASS] == ELFCLASS32) {
-            obj_32(buf, file);
-        } else if (elf->e_ident[EI_CLASS] == ELFCLASS64)
-            obj_64(elf, file);
-        else
-            printf("objdump: %s: file format not recognized\n", file);
-    } else {
-        perror("mmap");
-    }
+    if (buf == NULL)
+        return;
+    elf = buf;
+    if (elf->e_ident[EI_CLASS] == ELFCLASS32) {
+        obj_32(buf, file);
+    } else if (elf->e_ident[EI_CLASS] == ELFCLASS64)
+        obj_64(elf, file);
+    else
+        printf("objdump: %s: file format not recognized\n", file);
 }
 
 static int check_archi(int fd, char *file)
@@ -69,12 +67,12 @@ static int make_multiple(int argc, char **argv)
     for (int i = 1; i < argc; i++) {
         if (!strcmp(argv[i], "-s"))
             continue;
-        else if ((fd = open(argv[i], O_RDONLY)) != -1) {
+        if ((fd = open(argv[i], O_RDONLY)) != -1) {
             make_obj(fd, argv[i]);
-        } else {
-            printf("objdump: '%s': No such file\n", argv[i]);
-            res = -1;
+            continue;
         }
+        printf("objdump: '%s': No such file\n", argv[i]);
+        res = -1;
     }
     return res;
 }
@@ -90,14 +88,14 @@ int start_obj(int argc, char **argv, int pos)
             printf("objdump: '%s': No such file\n", "a.out");
             return 1;
         }
-    else if (argc == 3)
+    if (argc == 3)
         if ((fd = open(argv[pos], O_RDONLY)) != -1)
             my_obj(fd, argv[pos]);
         else {
             printf("objdump: '%s': No such file\n", argv[pos]);
             return 1;
         }
-    else if (make_multiple(argc, argv) == -1)
+    if (argc > 3 && make_multiple(argc, argv) == -1)
         return 1;
     return END_VALUE;
 }

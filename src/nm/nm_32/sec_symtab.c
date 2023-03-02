@@ -15,27 +15,8 @@ static void get_min_or_max(unsigned char type, char ch)
         printf("%c ", ch);
 }
 
-// int is_in_sec(char *name, Elf32_Shdr *tmp, elf32_t *elf32)
-// {
-//     char **act = ((char *) elf32->elf + elf32->symtab->sh_offset);
-//     for (size_t j = 0; j < tmp->sh_size / sizeof(char *); j++) {
-//         printf("%s = %s\n", name, act[j]);
-//         if (strncmp(name, act[j], tmp->sh_size) == 0)
-//             return 1;
-//     }
-//     return 0;
-// }
-
 static void print_type32(elf32_t *elf32, int i)
 {
-    // int type = ELF32_ST_TYPE(elf32->sym[i].st_info);
-    // Elf32_Shdr *tmp;
-    // for (int i = 0; i < elf32->elf->e_shnum; ++i) {
-    //     tmp = (Elf32_Shdr *) &elf32->shdr[i];
-    //     if (type == tmp->sh_type
-    //         && is_in_sec(elf32->sym[i].st_value, tmp, elf32) == 1)
-    //         printf("%s in ", &elf32->str[tmp->sh_name]);
-    // }
     int type = ELF32_ST_TYPE(elf32->sym[i].st_info);
     switch (type) {
         case SHT_PROGBITS: get_min_or_max(elf32->sym[i].st_info, 'd'); break;

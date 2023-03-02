@@ -15,17 +15,15 @@ void my_nm(int fd, char *file)
 
     fstat(fd, &s);
     buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-    if (buf != NULL) {
-        elf = buf;
-        if (elf->e_ident[EI_CLASS] == ELFCLASS32) {
-            nm_32(buf, file);
-        } else if (elf->e_ident[EI_CLASS] == ELFCLASS64)
-            nm_64(elf, file);
-        else
-            printf("nm: %s: file format not recognized\n", file);
-    } else {
-        perror("mmap");
-    }
+    if (buf == NULL)
+        return;
+    elf = buf;
+    if (elf->e_ident[EI_CLASS] == ELFCLASS32) {
+        nm_32(buf, file);
+    } else if (elf->e_ident[EI_CLASS] == ELFCLASS64)
+        nm_64(elf, file);
+    else
+        printf("nm: %s: file format not recognized\n", file);
 }
 
 static int check_archi(int fd, char *file)
@@ -88,14 +86,14 @@ int start_nm(int argc, char **argv)
             printf("nm: '%s': No such file\n", "a.out");
             return 1;
         }
-    else if (argc == 2)
+    if (argc == 2)
         if ((fd = open(argv[1], O_RDONLY)) != -1)
             my_nm(fd, argv[1]);
         else {
             printf("nm: '%s': No such file\n", argv[1]);
             return 1;
         }
-    else if (make_multiple(argc, argv) == -1)
+    if (argc > 2 && make_multiple(argc, argv) == -1)
         return 1;
     return END_VALUE;
 }

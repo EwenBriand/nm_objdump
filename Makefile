@@ -45,7 +45,8 @@ nm:	makelib $(OBJNM)
 	gcc $(MAINNM) $(SRCNM) $(MY) -o $(NAMENM) $(LDFLAGS) $(CPPFLAGS) $(CFLAGS)
 
 obj:	makelib $(OBJOBJ)
-	gcc $(MAINOBJ) $(SRCOBJ) $(MY) -o $(NAMEOBJ) $(LDFLAGS) $(CPPFLAGS) $(CFLAGS)
+	gcc $(MAINOBJ) $(SRCOBJ) $(MY) -o $(NAMEOBJ) $(LDFLAGS) \
+	$(CPPFLAGS) $(CFLAGS)
 
 makelib:
 	$(MAKE) -C $(PLACE)

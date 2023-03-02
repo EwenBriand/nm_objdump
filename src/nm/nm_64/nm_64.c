@@ -9,8 +9,6 @@
 
 static void nm_64_symbol(elf64_t *elf64, int i)
 {
-    // printf("%s\n", &elf64->str[elf64->shdr[i].sh_name]);
-
     if (strcmp(&elf64->str[elf64->shdr[i].sh_name], ".strtab") == 0)
         elf64->strtab = (Elf64_Shdr *) &elf64->shdr[i];
     else if (strcmp(&elf64->str[elf64->shdr[i].sh_name], ".symtab") == 0)

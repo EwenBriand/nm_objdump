@@ -55,7 +55,6 @@ static void print_section(elf64_t *elf64, int i)
         for (size_t j = 0; j < elf64->shdr[i].sh_size; j += 16) {
             printf(" %04lx ", elf64->shdr[i].sh_addr + j);
             print_16_char(elf64, i, j);
-            // print_section_content(elf64->elf, &elf64->shdr[i]);
         }
     }
 }
