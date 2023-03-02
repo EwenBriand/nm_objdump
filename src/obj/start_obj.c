@@ -18,10 +18,8 @@ void my_obj(int fd, char *file)
     if (buf != NULL) {
         elf = buf;
         if (elf->e_ident[EI_CLASS] == ELFCLASS32) {
-            // obj_32(buf, file);
-            printf("obj_32\n");
+            obj_32(buf, file);
         } else if (elf->e_ident[EI_CLASS] == ELFCLASS64)
-            // printf("obj_64\n");
             obj_64(elf, file);
         else
             printf("objdump: %s: file format not recognized\n", file);

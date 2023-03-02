@@ -18,6 +18,7 @@ static void get_min_max(unsigned char type, char ch)
 
 static void is_section(elf64_t *elf64, int i)
 {
+    // sh type et sh flags
     printf("IM IN %s\n",
         &elf64->str[elf64->shdr[elf64->sym[i].st_shndx].sh_name]);
     for (int j = 0; j < elf64->elf->e_shnum; ++j) {

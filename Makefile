@@ -17,7 +17,9 @@ OBJNM	=	$(SRCNM:.c=.o)
 
 SRCOBJ	=	src/obj/start_obj.c \
 			src/obj/obj_64/obj_64.c \
+			src/obj/obj_32/obj_32.c \
 			src/nm/nm_64/init_delete.c 	\
+			src/nm/nm_32/init_delete.c 	\
 
 OBJOBJ	=	$(SRCOBJ:.c=.o)
 

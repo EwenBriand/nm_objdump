@@ -109,5 +109,6 @@ void sec_symtab_32(elf32_t *elf64, int i);
 
 int start_obj(int argc, char **argv, int pos);
 void obj_64(Elf64_Ehdr *elf, char *file);
+void obj_32(Elf32_Ehdr *elf, char *file);
 
 #endif
