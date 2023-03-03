@@ -39,12 +39,12 @@ NAMENM	=	my_nm
 
 NAMEOBJ	=	my_objdump
 
-all:	nm obj
+all:	nm objdump
 
 nm:	makelib $(OBJNM)
 	gcc $(MAINNM) $(SRCNM) $(MY) -o $(NAMENM) $(LDFLAGS) $(CPPFLAGS) $(CFLAGS)
 
-obj:	makelib $(OBJOBJ)
+objdump:	makelib $(OBJOBJ)
 	gcc $(MAINOBJ) $(SRCOBJ) $(MY) -o $(NAMEOBJ) $(LDFLAGS) \
 	$(CPPFLAGS) $(CFLAGS)
 

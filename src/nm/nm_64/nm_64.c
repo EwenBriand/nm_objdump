@@ -25,8 +25,7 @@ void nm_64(Elf64_Ehdr *elf, char *file)
         return;
     }
     for (int i = 0; i < elf64->elf->e_shnum; ++i)
-        if (elf64->shdr[i].sh_size)
-            nm_64_symbol(elf64, i);
+        nm_64_symbol(elf64, i);
 
     elf64->sym =
         (Elf64_Sym *) ((char *) elf64->elf + elf64->symtab->sh_offset);
