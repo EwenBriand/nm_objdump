@@ -5,6 +5,7 @@
 ** creat the header of the libmy.a
 */
 
+#include <ctype.h>
 #include <elf.h>
 #include <fcntl.h>
 #include <stddef.h>
@@ -101,11 +102,13 @@ void delete_elf64(elf64_t *elf);
 int start_nm(int argc, char **argv);
 void nm_64(Elf64_Ehdr *elf, char *file);
 void sec_symtab_64(elf64_t *elf64, int i);
+void is_function(Elf64_Sym *sym, elf64_t *elf64);
 
 elf32_t *init_elf32(Elf32_Ehdr *ehdr, char *filename);
 void delete_elf32(elf32_t *elf);
 void nm_32(Elf32_Ehdr *elf, char *file);
 void sec_symtab_32(elf32_t *elf64, int i);
+void is_function32(Elf32_Sym *sym, elf32_t *elf32);
 
 int start_obj(int argc, char **argv, int pos);
 void obj_64(Elf64_Ehdr *elf, char *file);

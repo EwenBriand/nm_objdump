@@ -8,9 +8,11 @@
 SRCNM	=	src/nm/nm_64/init_delete.c 	\
 			src/nm/nm_64/nm_64.c \
 			src/nm/nm_64/sec_symtab.c \
+			src/nm/nm_64/print_type.c \
 			src/nm/nm_32/init_delete.c 	\
 			src/nm/nm_32/nm_32.c \
 			src/nm/nm_32/sec_symtab.c \
+			src/nm/nm_32/print_type.c \
 			src/nm/start_nm.c \
 
 OBJNM	=	$(SRCNM:.c=.o)

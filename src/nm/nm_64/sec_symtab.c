@@ -10,34 +10,59 @@
 
 static void get_min_max(unsigned char type, char ch)
 {
+    if (ELF64_ST_BIND(type) == STB_WEAK)
+        ch = 'w';
     if (ELF64_ST_BIND(type) == STB_GLOBAL)
         printf("%c ", toupper(ch));
     else
         printf("%c ", ch);
 }
 
-static void is_section(elf64_t *elf64, int i)
+static void is_notype(Elf64_Sym *sym)
 {
-    // sh type et sh flags
-    printf("IM IN %s\n",
-        &elf64->str[elf64->shdr[elf64->sym[i].st_shndx].sh_name]);
-    for (int j = 0; j < elf64->elf->e_shnum; ++j) {
-        if (!strcmp(&elf64->str[elf64->shdr[elf64->sym[i].st_shndx].sh_name],
-                &elf64->str[elf64->shdr[j].sh_name]))
-            printf("IM IN %s\n", &elf64->str[elf64->shdr[j].sh_name]);
+    if (sym->st_shndx == SHN_UNDEF) {
+        get_min_max(sym->st_info, 'u');
+        return;
+    }
+    if (sym->st_shndx == SHN_ABS) {
+        get_min_max(sym->st_info, 'a');
+        return;
+    }
+    if (sym->st_shndx == SHN_COMMON) {
+        get_min_max(sym->st_info, 'c');
+        return;
+    }
+    get_min_max(sym->st_info, 't');
+}
+
+static void is_object(Elf64_Sym *sym, elf64_t *elf64)
+{
+    Elf64_Shdr *shdr;
+
+    if (sym->st_shndx == SHN_UNDEF) {
+        printf("U ");
+    } else if (sym->st_shndx == SHN_COMMON) {
+        printf("C ");
+    } else {
+        shdr = &elf64->shdr[sym->st_shndx];
+        if (shdr->sh_type == SHT_NOBITS) {
+            get_min_max(sym->st_info, shdr->sh_flags & SHF_WRITE ? 'b' : 'r');
+        } else {
+            get_min_max(sym->st_info, shdr->sh_flags & SHF_WRITE ? 'd' : 'r');
+        }
     }
 }
 
-static void print_type64(elf64_t *elf64, int i)
+static void print_symbol_type(elf64_t *elf64, int i)
 {
-    int type = ELF64_ST_TYPE(elf64->sym[i].st_info);
-    switch (type) {
-        case STT_NOTYPE: return get_min_max(elf64->sym[i].st_info, '?');
-        case STT_OBJECT: return get_min_max(elf64->sym[i].st_info, 'd');
-        case STT_FUNC: return get_min_max(elf64->sym[i].st_info, 't');
-        case STT_SECTION: return is_section(elf64, i);
-        case STT_FILE: return get_min_max(elf64->sym[i].st_info, 'f');
-        default: return get_min_max(elf64->sym[i].st_info, '?');
+    Elf64_Sym *sym = &elf64->sym[i];
+    switch (ELF64_ST_TYPE(sym->st_info)) {
+        case STT_NOTYPE: is_notype(sym); break;
+        case STT_OBJECT: is_object(sym, elf64); break;
+        case STT_FUNC: is_function(sym, elf64); break;
+        case STT_SECTION: printf("S "); break;
+        case STT_FILE: printf("F "); break;
+        default: printf("? "); break;
     }
 }
 
@@ -55,6 +80,6 @@ void sec_symtab_64(elf64_t *elf64, int i)
         printf("%lx ", elf64->sym[i].st_value);
     } else
         printf("                 ");
-    print_type64(elf64, i);
+    print_symbol_type(elf64, i);
     printf("%s\n", str + elf64->sym[i].st_name);
 }
