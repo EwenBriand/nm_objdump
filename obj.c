@@ -9,13 +9,17 @@
 
 int error_handler(int argc, char **argv)
 {
-    if (argc < 2 || (argc == 2 && strcmp(argv[1], "-s") != 0)) {
+    if (argc < 2
+        || (argc == 2
+            && (strcmp(argv[1], "-s") != 0 || strcmp(argv[1], "-sf") != 0
+                || strcmp(argv[1], "-fs") != 0))) {
         printf("%s", HELPER);
         return -1;
     }
 
     for (int i = 1; i < argc; i++)
-        if (strcmp(argv[i], "-s") == 0)
+        if (strcmp(argv[i], "-s") == 0 || strcmp(argv[1], "-sf") == 0
+            || strcmp(argv[1], "-fs") == 0)
             return (i == 1) ? 2 : 1;
     return -1;
 }
