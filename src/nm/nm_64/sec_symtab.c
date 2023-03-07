@@ -79,7 +79,7 @@ void sec_symtab_64(elf64_t *elf64, int i)
             printf("0");
         printf("%lx ", elf64->sym[i].st_value);
     } else
-        printf("                 ");
+        printf("0000000000000000 ");
     print_symbol_type(elf64, i);
     printf("%s\n", str + elf64->sym[i].st_name);
 }

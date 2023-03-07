@@ -55,6 +55,7 @@ static void make_obj(int fd, char *file)
         return;
     }
     printf("\n");
+    printf("%s:\n", file);
     my_obj(fd, file);
 }
 
@@ -80,21 +81,14 @@ int start_obj(int argc, char **argv, int pos)
 {
     int fd = -1;
 
-    if (argc == 2)
+    if (argc == 1 || (argc == 2 && pos != 0))
         if ((fd = open("a.out", O_RDONLY)) != -1)
             my_obj(fd, "a.out");
         else {
             printf("objdump: '%s': No such file\n", "a.out");
             return 1;
         }
-    if (argc == 3)
-        if ((fd = open(argv[pos], O_RDONLY)) != -1)
-            my_obj(fd, argv[pos]);
-        else {
-            printf("objdump: '%s': No such file\n", argv[pos]);
-            return 1;
-        }
-    if (argc > 3 && make_multiple(argc, argv) == -1)
+    else if (make_multiple(argc, argv) == -1)
         return 1;
     return END_VALUE;
 }

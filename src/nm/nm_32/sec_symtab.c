@@ -78,7 +78,7 @@ void sec_symtab_32(elf32_t *elf32, int i)
             printf("0");
         printf("%x ", elf32->sym[i].st_value);
     } else
-        printf("                 ");
+        printf("0000000000000000 ");
     print_symbol_type32(elf32, i);
     printf("%s\n", str + elf32->sym[i].st_name);
 }
