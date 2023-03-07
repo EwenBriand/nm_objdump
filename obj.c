@@ -18,8 +18,7 @@ int error_handler(int argc, char **argv)
     }
 
     for (int i = 1; i < argc; i++)
-        if (strcmp(argv[i], "-s") == 0 || strcmp(argv[1], "-sf") == 0
-            || strcmp(argv[1], "-fs") == 0)
+        if (strcmp(argv[1], "-sf") == 0 || strcmp(argv[1], "-fs") == 0)
             return (i == 1) ? 2 : 1;
     return -1;
 }

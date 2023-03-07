@@ -68,7 +68,12 @@ void obj_64(Elf64_Ehdr *elf, char *file)
         printf("nm: %s: file format not recognized\n", elf64->filename);
         return;
     }
-    printf("%i\n", elf64->elf->e_shnum);
+
+    printf("%s:     file format elf64-x86-64\n", file);
+    printf("architecture: i386:x86-64, flags 0x%08x:\n", elf64->elf->e_flags);
+    printf("\n");
+    printf("start address 0x%016lx\n\n", elf64->elf->e_entry);
+
     for (int i = 0; i < elf64->elf->e_shnum; ++i)
         if (elf64->shdr[i].sh_size)
             print_section(elf64, i);

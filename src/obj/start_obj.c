@@ -55,7 +55,6 @@ static void make_obj(int fd, char *file)
         return;
     }
     printf("\n");
-    printf("%s:\n", file);
     my_obj(fd, file);
 }
 
@@ -65,7 +64,7 @@ static int make_multiple(int argc, char **argv)
     int res = 0;
 
     for (int i = 1; i < argc; i++) {
-        if (!strcmp(argv[i], "-s"))
+        if (!strcmp(argv[i], "-sf") || !strcmp(argv[i], "-fs"))
             continue;
         if ((fd = open(argv[i], O_RDONLY)) != -1) {
             make_obj(fd, argv[i]);
